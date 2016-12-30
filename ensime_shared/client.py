@@ -229,12 +229,12 @@ class EnsimeClient(TypecheckHandler, DebuggerClient, ProtocolHandler):
         """Disable plugin temporarily, including also related plugins."""
         self.log.debug('disable_plugin: in')
 
-        def threadsafe_vim(command):
+        def threadsafe_vim(cmd):
             """Threadsafe call if neovim, normal if vim."""
             def normal_vim(e):
-                self.vim.command(command)
+                self.vim.command(cmd)
             with catch(Exception, normal_vim):
-                self.vim.session.threadsafe_call(command)
+                self.vim.session.threadsafe_call(cmd)
 
         for path in self.runtime_paths:
             self.log.debug(path)

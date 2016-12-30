@@ -43,7 +43,7 @@ class Util:
 
 
 @contextmanager
-def catch(exception, handler=lambda e: None):
+def catch(exception, handler=lambda h: None):
     """If exception runs handler."""
     try:
         yield
