@@ -316,7 +316,8 @@ class EnsimeClient(TypecheckHandler, DebuggerClient, ProtocolHandler):
             self.editor.set_cursor(decl_pos['line'], 0)
         else:  # OffsetSourcePosition
             point = decl_pos["offset"]
-            self.editor.goto(point + 1)
+            row, col = self.editor.point2pos(point + 1)
+            self.editor.set_cursor(row, col)
 
     def get_position(self, row, col):
         """Get char position in all the text from row and column."""

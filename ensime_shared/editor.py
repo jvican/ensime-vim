@@ -80,8 +80,17 @@ class Editor(object):
         return buf[:]
 
     def goto(self, offset):
-        """Go to a specific byte offset in the current buffer."""
+        """Go to a specific byte offset in the current buffer.
+
+        Operation is added to the jump list.
+        """
         self._vim.command('goto {}'.format(offset))
+
+    def point2pos(self, point):
+        """Converts a point or offset in a file to a (row, col) position."""
+        row = self._vim.eval('byte2line({})'.format(point))
+        col = self._vim.eval('{} - line2byte({})'.format(point, row))
+        return (int(row), int(col))
 
     def menu(self, prompt, choices):
         """Presents a selection menu and returns the user's choice.
@@ -216,7 +225,10 @@ class Editor(object):
         return self._vim.current.window.cursor
 
     def set_cursor(self, row, col):
-        """Set cursor position to given row and column in the current window."""
+        """Set cursor position to given row and column in the current window.
+
+        Operation is not added to the jump list.
+        """
         self._vim.current.window.cursor = (row, col)
 
     # TODO: don't displace user's cursor; can something like ``getpos()`` do this?
